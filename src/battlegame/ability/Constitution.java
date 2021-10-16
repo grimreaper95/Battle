@@ -1,7 +1,16 @@
 package battlegame.ability;
 
-public class Constitution extends AbstractAbility{
-  public Constitution(){
-    super();
+import battlegame.random.IRandom;
+
+/**
+ * A class to represent Constitution of a Player.
+ */
+public class Constitution extends AbstractAbility {
+  /**
+   * Constructs a Constitution object.
+   * @param randomGenerator random number generator
+   */
+  public Constitution(IRandom randomGenerator) {
+    super(randomGenerator);
   }
 }
