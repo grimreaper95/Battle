@@ -44,4 +44,16 @@ public interface IBattle {
   * @return the name of the player who is going to move first.
   */
   String getPlayerToMoveFirstName();
+
+  /**
+   * Get the actual damage done in a turn.
+   * @return the actual damage done in a turn.
+   */
+  int getActualDamage();
+
+  /**
+   * Get if current player to move can strike in this move.
+   * @return true if player strikes in this move, else returns false.
+   */
+  boolean canPlayerStrike();
 }

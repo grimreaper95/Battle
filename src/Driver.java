@@ -1,3 +1,4 @@
+import battlegame.ability.AbilityName;
 import battlegame.battle.Battle;
 import battlegame.battle.IBattle;
 import battlegame.gear.Gear;
@@ -24,8 +25,8 @@ public class Driver {
    */
   public static void main(String[] args) {
     IRandom randomGenerator = new RandomGenerator();
-    IPlayer player1 = new Player("Superman", randomGenerator);
-    IPlayer player2 = new Player("Batman", randomGenerator);
+    IPlayer player1 = new Player("Player 1", randomGenerator);
+    IPlayer player2 = new Player("Player 2", randomGenerator);
 
     System.out.println("Players enter the Battle");
     final IBattle battle = new Battle(player1, player2);
@@ -76,14 +77,17 @@ public class Driver {
     do {
       System.out.println(battle.getCurrentPlayerToMoveName() + " moves now.");
       battle.move();
+      System.out.println("Can player strike ? " + battle.canPlayerStrike());
+      if (!battle.canPlayerStrike()) {
+        System.out.println("Going to next move as Player cannot strike");
+        continue;
+      }
+      System.out.println("Damage done = " + battle.getActualDamage());
       System.out.println("After move " + moves++);
       System.out.println("Health of player 1: " + player1.getHealth());
       System.out.println("Health of player 2: " + player2.getHealth());
       if (!battle.isBattleOn()) {
         moves = 1;
-        //if (moves == 0) {
-        //System.out.println("This battle ends in a draw!");
-        //} else {
         System.out.println(battle.getWinnerName() + " wins the battle!");
         System.out.println("Do you wanna play a rematch ? (Y / N)");
         choice = scanner.next().charAt(0);
@@ -100,6 +104,7 @@ public class Driver {
           break;
         }
       }
-    }while (true);
+    }
+    while (true);
   }
 }

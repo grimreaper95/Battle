@@ -19,7 +19,9 @@ public class Battle implements IBattle {
   private final IPlayer dummyPlayerDraw;
   private boolean battleOn;
   private int battleMoves;
-  private IRandom randomGenerator;
+  private int actualDamage;
+  private boolean canPlayerStrike;
+
 
   /**
    * Constructs a Battle object.
@@ -39,10 +41,10 @@ public class Battle implements IBattle {
     battleMoves = 0;
     playerToMoveNow = player1;
     playerToMoveNext = player2;
-    randomGenerator = new RandomGenerator();
+    final IRandom randomGenerator = new RandomGenerator();
     dummyPlayerDraw = new Player("No player", randomGenerator);
-    winner = player1;
   }
+
 
   @Override
   public void move() {
@@ -51,8 +53,10 @@ public class Battle implements IBattle {
       battleOn = false;
       winner = dummyPlayerDraw;
     }
-    if (playerToMoveNow.canStrike(playerToMoveNext.getAvoidanceAbility())) {
-      int actualDamage = getActualDamage();
+    canPlayerStrike = playerToMoveNow.canStrike(playerToMoveNext.getAvoidanceAbility());
+    if (canPlayerStrike) {
+      actualDamage = playerToMoveNow.getActualDamage(
+              playerToMoveNext.getAbilities().get(AbilityName.CONSTITUTION));
       if (actualDamage > 0) {
         playerToMoveNext.decreaseHealth(actualDamage);
         if (playerToMoveNext.getHealth() <= 0) {
@@ -66,9 +70,14 @@ public class Battle implements IBattle {
     playerToMoveNext = temp;
   }
 
-  private int getActualDamage() {
-    return playerToMoveNow.getActualDamage(
-            playerToMoveNext.getAbilities().get(AbilityName.CONSTITUTION));
+  @Override
+  public boolean canPlayerStrike() {
+    return canPlayerStrike;
+  }
+
+  @Override
+  public int getActualDamage() {
+    return actualDamage;
   }
 
   @Override
